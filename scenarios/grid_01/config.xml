@@ -2,16 +2,16 @@
 <!-- note
 -->
 <data>
-
-    <url>
-        <url name="absPath" type="dir">/home/mtiricolgi/project/learndynet</url>
-        <url name="url_scenarios" type="dir">scenarios</url>  <!-- where are stored all scenarios-->
+    <urls>
+        <url name="absPath" type="dir">/media/mtirico/DATA/project/learnDyNet/learnDyNet</url>
+        <url name="scenarios" type="dir">scenarios</url>  <!-- where are stored all scenarios-->
         <url name="scenario" type="dir">grid_01</url>           <!-- where it is stored scenario to study-->
         <url name="tmp" type="dir">.tmp</url>
         <url name="resources" type="dir"> resources </url>
         <url name="states" type="file">states.xml</url> <!-- the xml with all states and links -->
+        <url name="outputs" type="dir">outputs</url>  <!-- where are stored all scenarios-->
 
-    </url>
+    </urls>
 
     <simulation>
         <parameter name="numsim">10  </parameter> <!-- 1 means we do only the first sim (named sim-0000) -->
@@ -19,10 +19,11 @@
     </simulation>
 
     <network>
-        <grid>
-            <parameter name="dimension">1 5 8</parameter>
-            <parameter name="length_xy">1.0 1.0</parameter>
-        </grid>
+        <parameter name="typenetwork" type="val">grid</parameter>
+        <parameter name="dimension_x" type="grid">3</parameter>
+        <parameter name="dimension_y" type="grid">5</parameter>
+        <parameter name="dist_x" type="grid">1.0</parameter>
+        <parameter name="dist_y" type="grid">2.0</parameter>
     </network>
 
 
