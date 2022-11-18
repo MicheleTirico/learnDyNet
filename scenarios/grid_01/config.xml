@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- note
+-->
+<data>
+
+    <url>
+        <url name="absPath" type="dir">/home/mtiricolgi/project/learndynet</url>
+        <url name="url_scenarios" type="dir">scenarios</url>  <!-- where are stored all scenarios-->
+        <url name="scenario" type="dir">grid_01</url>           <!-- where it is stored scenario to study-->
+        <url name="tmp" type="dir">.tmp</url>
+        <url name="resources" type="dir"> resources </url>
+        <url name="states" type="file">states.xml</url> <!-- the xml with all states and links -->
+
+    </url>
+
+    <simulation>
+        <parameter name="numsim">10  </parameter> <!-- 1 means we do only the first sim (named sim-0000) -->
+        <parameter name="initStates"> wcb1</parameter> <!-- random or fix a kind of state. if random, do not need set value, otherwise set init state type -->
+    </simulation>
+
+    <network>
+        <grid>
+            <parameter name="dimension">1 5 8</parameter>
+            <parameter name="length_xy">1.0 1.0</parameter>
+        </grid>
+    </network>
+
+
+    <learning>
+
+    </learning>
+
+</data>

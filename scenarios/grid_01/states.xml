@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- note
+-->
+<states>
+    <state name="w1">
+        <description>one line for pedestrian </description>
+        <line modes="walk" lines="1" cost="0.1" dir="from-to"/>
+        <line modes="walk" lines="1" cost="0.1" dir="to-from"/>
+    </state>
+    <state name="b1">
+        <description>two lines for bike </description>
+        <line modes="bike" lines="1" cost="0.1" dir="from-to"/>
+        <line modes="bike" lines="1" cost="0.1" dir="to-from"/>
+    </state>
+</states>
