@@ -23,15 +23,18 @@ class Config:
 
         # path url
         self.pathAbs = self.__getVal("urls","url","absPath")+"/"
+
         self.pathScenarios=self.pathAbs+self.__getVal("urls","url","scenarios")+"/"
-        self.pathScenario=self.pathScenarios+self.__getVal("urls","url","scenario")
+        self.pathScenario=self.pathScenarios+self.__getVal("urls","url","scenario")+"/"
         self.pathTmp=self.pathAbs+self.__getVal("urls","url","tmp")
         self.pathOutputs=self.pathAbs+self.__getVal("urls","url","outputs")+"/"
         self.pathOutput=self.pathOutputs+self.__getVal("urls","url","scenario")
-        self.patStates=self.pathAbs+self.__getVal("urls","url","states")
+        self.pathStates=self.pathScenario+self.__getVal("urls","url","states")
 
         # parameters simulation
-        self.numSim=self.__getVal("simulation","parameter","numsim")
+        self.numSim=            self.__getVal("simulation","parameter","numsim")
+        self.initStateMode=     self.__getVal("simulation","parameter","initStateMode")
+        self.initState=         self.__getVal("simulation","parameter","initState")
 
         # parameters
         self.typeNetwork=self.__getValType("network","parameter","typenetwork","val")
