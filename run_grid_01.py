@@ -4,6 +4,7 @@ from learnDyNet.learndynet.setup.config import Config
 from learnDyNet.learndynet.setup.controller import Controller
 from learnDyNet.learndynet.network.network import Network
 from learnDyNet.learndynet.network.networkGrid import NetworkGrid
+from learnDyNet.learndynet.setup.individuals import Individuals
 from learnDyNet.learndynet.setup.stateSet import StateSet
 
 pathConfig="/media/mtirico/DATA/project/learnDyNet/learnDyNet/scenarios/grid_01/config.xml"
@@ -17,9 +18,8 @@ controller.initSimulation()
 network=Network(config)
 networkGrid=NetworkGrid(config,network)
 networkGrid.initNetwork()
-G_states=network.getGraph_states()
-network.setGraph_states(G_states)
-network.init_G_sim()
+network.setGraph(networkGrid.getGraph())
+#network.init_G_sim()
 
 #stateSet
 stateSet=StateSet(config)
@@ -29,13 +29,19 @@ network.setStateSet(stateSet)
 # Agents
 agents=Agents(config,network,stateSet)
 agents.initAgents()
+# individuals
+individuals=Individuals(config,network)
+individuals.initIndividuals()
 
-network.update_G_sim()
+print (individuals.getIndividuals())
+
+print (individuals.getIndividual(1))
+quit()
 
 
 
 
-network.dispayGraph_states(False)
-network.dispayGraph_sim(True)
+
+network.dispayGraph(False)
 
 

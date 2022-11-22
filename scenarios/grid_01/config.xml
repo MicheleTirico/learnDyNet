@@ -19,12 +19,17 @@
         <parameter name="initStateMode">same</parameter>
     </simulation>
 
+    <mobility>
+        <parameter name="typeInitIndividuals">random</parameter>
+        <parameter name="percentIndividuals">0.4</parameter>
+    </mobility>
+
     <network>
         <parameter name="typeNetwork" type="val">grid</parameter>
-        <parameter name="dimension_x" type="grid">3</parameter>
-        <parameter name="dimension_y" type="grid">5</parameter>
-        <parameter name="dist_x" type="grid">1.0</parameter>
-        <parameter name="dist_y" type="grid">2.0</parameter>
+        <parameter name="dimension_x" type="grid">4</parameter>
+        <parameter name="dimension_y" type="grid">4</parameter>
+        <parameter name="dist_x" type="grid">2</parameter>
+        <parameter name="dist_y" type="grid">3</parameter>
     </network>
 
 

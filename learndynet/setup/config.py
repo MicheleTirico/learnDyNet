@@ -32,15 +32,19 @@ class Config:
         self.pathStates=self.pathScenario+self.__getVal("urls","url","states")
 
         # parameters simulation
-        self.numSim=            self.__getVal("simulation","parameter","numsim")
-        self.initStateMode=     self.__getVal("simulation","parameter","initStateMode")
-        self.initState=         self.__getVal("simulation","parameter","initState")
+        self.numSim=                self.__getVal("simulation","parameter","numsim")
+        self.initStateMode=         self.__getVal("simulation","parameter","initStateMode")
+        self.initState=             self.__getVal("simulation","parameter","initState")
 
-        # parameters
-        self.typeNetwork=self.__getValType("network","parameter","typenetwork","val")
+        # mobility parameters
+        self.typeInitIndividuals=   self.__getVal("mobility","parameter","typeInitIndividuals")
+        self.percentIndividuals=    float(self.__getVal("mobility","parameter","percentIndividuals"))
+
+        # network parameters
+        self.typeNetwork=           self.__getValType("network","parameter","typenetwork","val")
         # grid
-        self.graph_grid_dimension_x= int(self.__getValType("network","parameter","dimension_x","grid"))
-        self.graph_grid_dimension_y= int(self.__getValType("network","parameter","dimension_y","grid"))
+        self.graph_grid_dimension_x=int(self.__getValType("network","parameter","dimension_x","grid"))
+        self.graph_grid_dimension_y=int(self.__getValType("network","parameter","dimension_y","grid"))
         self.graph_grid_dist_x=float(self.__getValType("network","parameter","dist_x","grid"))
         self.graph_grid_dist_y=float(self.__getValType("network","parameter","dist_y","grid"))
 

@@ -27,7 +27,7 @@ class StateSet ():
             self.__stateSet[name]=state
     def getStates(self):        return self.__stateSet
     def getState(self,name):    return self.__stateSet[name]
-
+    def getNstates(self):          return len(self.__stateSet)
 class State():
     def __init__(self, name):
         self.__name=name
