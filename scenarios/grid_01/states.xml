@@ -12,4 +12,11 @@
         <line modes="bike" lines="1" cost="0.1" dir="from-to"/>
         <line modes="bike" lines="1" cost="0.1" dir="to-from"/>
     </state>
+    <state name="wb1">
+        <description>one line for pedestrian </description>
+        <line modes="walk" lines="1" cost="0.1" dir="from-to"/>
+        <line modes="walk" lines="1" cost="0.1" dir="to-from"/>
+        <line modes="bike" lines="1" cost="0.1" dir="from-to"/>
+        <line modes="bike" lines="1" cost="0.1" dir="to-from"/>
+    </state>
 </states>

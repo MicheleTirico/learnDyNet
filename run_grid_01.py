@@ -1,5 +1,6 @@
 # simulation grid
-from learnDyNet.learndynet.setup.agents import Agents
+from learnDyNet.learndynet.mobility.mobility import Mobility
+#from learnDyNet.learndynet.setup.agents import Agents
 from learnDyNet.learndynet.setup.config import Config
 from learnDyNet.learndynet.setup.controller import Controller
 from learnDyNet.learndynet.network.network import Network
@@ -14,29 +15,68 @@ config=Config(pathConfig)
 controller=Controller(config)
 controller.initSimulation()
 
-# network
-network=Network(config)
-networkGrid=NetworkGrid(config,network)
-networkGrid.initNetwork()
-network.setGraph(networkGrid.getGraph())
-#network.init_G_sim()
-
 #stateSet
 stateSet=StateSet(config)
 stateSet.initStates()
-network.setStateSet(stateSet)
+
+# network
+network=Network(config,stateSet)
+networkGrid=NetworkGrid(config,network,stateSet)
+networkGrid.initNetwork()
+network.setGraph(networkGrid.getGraph())
+network.initAgents()
+network.setWeights()
+print ("ciao")
+
+# individuals
+individuals=Individuals(config,network)
+individuals.initIndividuals()
+print ("ciao")
+
+# mobility
+mobility=Mobility(config,network,individuals)
+mobility.initMobility()
+mobility.compute()
+
+
+
+
+
+
+
+
+
+quit()
+
+G=network.getGraph()
+for e in G.edges(data=True):
+    print (e)
+
+
+#network.init_G_sim()
+
+#network.setStateSet(stateSet)
 
 # Agents
 agents=Agents(config,network,stateSet)
 agents.initAgents()
+
 # individuals
 individuals=Individuals(config,network)
 individuals.initIndividuals()
 
-print (individuals.getIndividuals())
+# mobility
+mobility=Mobility(config,network,individuals)
+mobility.initMobility()
+mobility.compute()
 
-print (individuals.getIndividual(1))
-quit()
+network.setWeights()
+
+
+
+#print (individuals.getIndividuals())
+#print (individuals.getIndividual(1))
+#quit()
 
 
 

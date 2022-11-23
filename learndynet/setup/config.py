@@ -39,6 +39,8 @@ class Config:
         # mobility parameters
         self.typeInitIndividuals=   self.__getVal("mobility","parameter","typeInitIndividuals")
         self.percentIndividuals=    float(self.__getVal("mobility","parameter","percentIndividuals"))
+        self.typeMobilityModel=     self.__getVal('mobility',"parameter","typeMobilityModel")
+        self.val_weigth_out=        float(self.__getVal("mobility","parameter","val_weigth_out"))
 
         # network parameters
         self.typeNetwork=           self.__getValType("network","parameter","typenetwork","val")

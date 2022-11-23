@@ -22,6 +22,9 @@
     <mobility>
         <parameter name="typeInitIndividuals">random</parameter>
         <parameter name="percentIndividuals">0.4</parameter>
+        <parameter name="alpha">0.5</parameter>
+        <parameter name="typeMobilityModel">discreteModeChoice</parameter>
+        <parameter name="val_weigth_out">0</parameter>
     </mobility>
 
     <network>

@@ -7,10 +7,11 @@ from networkx import grid_graph, MultiDiGraph
 import networkx as nx
 
 class NetworkGrid (Network):
-    def __init__(self,config,network):
-        super (NetworkGrid,self).__init__(config)
+    def __init__(self,config,network,stateSet):
+        super (NetworkGrid,self).__init__(config,stateSet)
         self.__config=config
         self.__network=network
+        self.__stateSet=stateSet
 
     def initNetwork(self):
         G=grid_graph(dim=(self.__config.graph_grid_dimension_x,self.__config.graph_grid_dimension_y))
@@ -33,7 +34,7 @@ class NetworkGrid (Network):
         # set id and length edges
         i=1
         for e in G.edges(data=True):
-            G.edges[e[0],e[1]]["id_state"]=i
+            G.edges[e[0],e[1]]["id"]=i
             coord0=G.nodes[e[0]]["coord"]
             coord1=G.nodes[e[1]]["coord"]
             dist=math.sqrt( math.pow(coord1[0]-coord0[0],2)+math.pow(coord1[1]-coord0[1],2))
