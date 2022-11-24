@@ -42,12 +42,15 @@ class Individual:
         self.__id=id
         self.__startPos=0
         self.__activityPos=0
-        self.__trip=[]
-        self.__utility=[]
+        self.__sp=[]
+        self.__utilities=[]
 
     def setStartPos(self,startPos):     self.__startPos=startPos
     def setActivity(self,activityPos):  self.__activityPos=activityPos
     def getStartPos(self):              return self.__startPos
-    def getActivityPos(self):              return self.__activityPos
-    def getTrips(self):                 return self.__trip
-    def getUtilities(self):             return  self.__utility
+    def getActivityPos(self):           return self.__activityPos
+
+    def getSp(self):                    return self.__sp
+    def getUtilities(self):             return  self.__utilities
+    def setSp(self,sp):                 self.__sp=sp
+    def setUtilities(self,utilities):   self.__utilities=utilities

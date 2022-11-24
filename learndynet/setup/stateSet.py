@@ -25,9 +25,12 @@ class StateSet ():
                     l=[modes,lines,cost,dir]
                     state.setLine(l)
             self.__stateSet[name]=state
+
+    def getListStates(self):    return list(self.__stateSet.keys())
     def getStates(self):        return self.__stateSet
     def getState(self,name):    return self.__stateSet[name]
-    def getNstates(self):          return len(self.__stateSet)
+    def getNstates(self):       return len(self.__stateSet)
+
 class State():
     def __init__(self, name):
         self.__name=name

@@ -15,37 +15,42 @@ class Mobility():
             dmc=DiscreteModeChoice(self.__config,self.__network,self.__individuals)
 
     def compute(self):
-        G=self.__network.getGraph()
-        print (self.__individuals.getIndividuals())
+        #G=self.__network.getGraph()
         for id , individual in self.__individuals.getIndividuals().items():
-#            individual=self.__individuals.getIndividuals.get(id)
-            sp_walk=nx.dijkstra_path(self.__network.getGraph(),source=individual.getStartPos(),target=individual.getActivityPos(),weight="weight_walk")
-            sp_bike=nx.dijkstra_path(self.__network.getGraph(),source=individual.getStartPos(),target=individual.getActivityPos(),weight="weight_bike")
-            sp_car=nx.dijkstra_path(self.__network.getGraph(),source=individual.getStartPos(),target=individual.getActivityPos(),weight="weight_car")
+            sp_walk_go=nx.dijkstra_path(self.__network.getGraph(),source=individual.getStartPos(),target=individual.getActivityPos(),weight="weight_walk")
+            sp_bike_go=nx.dijkstra_path(self.__network.getGraph(),source=individual.getStartPos(),target=individual.getActivityPos(),weight="weight_bike")
+            sp_car_go=nx.dijkstra_path(self.__network.getGraph(),source=individual.getStartPos(),target=individual.getActivityPos(),weight="weight_car")
 
+            utility_walk_go=nx.shortest_path_length(G=self.__network.getGraph(),source=individual.getStartPos(),target=individual.getActivityPos(),weight="weight_walk")
+            utility_bike_go=nx.shortest_path_length(G=self.__network.getGraph(),source=individual.getStartPos(),target=individual.getActivityPos(),weight="weight_bike")
+            utility_car_go=nx.shortest_path_length(G=self.__network.getGraph(),source=individual.getStartPos(),target=individual.getActivityPos(),weight="weight_car")
 
+            sp_walk_back=nx.dijkstra_path(self.__network.getGraph(),source=individual.getActivityPos(),target=individual.getStartPos(),weight="weight_walk")
+            sp_bike_back=nx.dijkstra_path(self.__network.getGraph(),source=individual.getActivityPos(),target=individual.getStartPos(),weight="weight_bike")
+            sp_car_back=nx.dijkstra_path(self.__network.getGraph(),source=individual.getActivityPos(),target=individual.getStartPos(),weight="weight_car")
 
-            utility_walk=nx.shortest_path_length(G=self.__network.getGraph(),source=individual.getStartPos(),target=individual.getActivityPos(),weight="weight_walk")
-            utility_bike=nx.shortest_path_length(G=self.__network.getGraph(),source=individual.getStartPos(),target=individual.getActivityPos(),weight="weight_bike")
-            utility_car=nx.shortest_path_length(G=self.__network.getGraph(),source=individual.getStartPos(),target=individual.getActivityPos(),weight="weight_car")
-            print(utility_walk,utility_bike,utility_car)
-            print (id,individual)
-            print ("sp_walk",sp_walk)
-            print ("sp_bike",sp_bike)
-            print ("sp_car",sp_car)
-            for node in sp_walk:
-                print (node)
+            utility_walk_back=nx.shortest_path_length(G=self.__network.getGraph(),source=individual.getActivityPos(),target=individual.getStartPos(),weight="weight_walk")
+            utility_bike_back=nx.shortest_path_length(G=self.__network.getGraph(),source=individual.getActivityPos(),target=individual.getStartPos(),weight="weight_bike")
+            utility_car_back=nx.shortest_path_length(G=self.__network.getGraph(),source=individual.getActivityPos(),target=individual.getStartPos(),weight="weight_car")
 
-            sim_edges = [(u,v) for u,v,e in self.__network.getGraph().edges(data=True) if e["edge_function"] == "sim"]
-            G_sim=nx.subgraph(self.__network.getGraph(),sim_edges)
-            walk_edges = [(u,v) for u,v,e in self.__network.getGraph().edges(data=True) if e["modes"] == "walk"]
+            sp_walk=[sp_walk_go,sp_walk_back]
+            utility_walk=[utility_walk_go,utility_walk_back]
 
-            quit()
-            walk_edges= [(u,v) for u,v,e in self.__network.getGraph().edges(data=True) if e["modes"] == "walk"]
-            list_ed=self.__network.getGraph().edges(sp_car[0],sp_car[1])
-            for n,values in self.__network.getGraph().adj[sp_car[0]][sp_car[1]].items():
-                attrib=self.__network.getGraph().adj[sp_car[0]][sp_car[1]].get(n)
-                if attrib["edge_function"]=="state":print (n)
+            sp_bike=[sp_bike_go,sp_bike_back]
+            utility_bike=[utility_bike_go,utility_bike_back]
 
+            sp_car=[sp_car_go,sp_car_back]
+            utility_car=[utility_car_go,utility_car_back]
 
-            quit()
+            individual.setSp([sp_walk,sp_bike,sp_car])
+            individual.setUtilities([utility_walk,utility_bike,utility_car])
+
+            print(sp_walk,sp_bike,sp_car,sep="\n")
+            print(utility_walk,utility_bike,utility_car,sep="\n")
+            """
+
+            compute shortest path of first part 
+            assign the utility and the shortest path for each mode 
+            if exception, assign 0
+            
+            """

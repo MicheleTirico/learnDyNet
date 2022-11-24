@@ -35,6 +35,10 @@ class Config:
         self.numSim=                self.__getVal("simulation","parameter","numsim")
         self.initStateMode=         self.__getVal("simulation","parameter","initStateMode")
         self.initState=             self.__getVal("simulation","parameter","initState")
+        self.seedInitStateMode=     int(self.__getVal("simulation","parameter","seedInitStateMode"))
+
+
+
 
         # mobility parameters
         self.typeInitIndividuals=   self.__getVal("mobility","parameter","typeInitIndividuals")

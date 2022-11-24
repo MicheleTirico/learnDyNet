@@ -1,6 +1,7 @@
 # simulation grid
 from learnDyNet.learndynet.mobility.mobility import Mobility
 #from learnDyNet.learndynet.setup.agents import Agents
+from learnDyNet.learndynet.reward.reward import Reward
 from learnDyNet.learndynet.setup.config import Config
 from learnDyNet.learndynet.setup.controller import Controller
 from learnDyNet.learndynet.network.network import Network
@@ -26,18 +27,26 @@ networkGrid.initNetwork()
 network.setGraph(networkGrid.getGraph())
 network.initAgents()
 network.setWeights()
-print ("ciao")
+print ("end network")
 
 # individuals
 individuals=Individuals(config,network)
 individuals.initIndividuals()
-print ("ciao")
+print ("end individuals")
 
 # mobility
+print ("start mobility")
 mobility=Mobility(config,network,individuals)
 mobility.initMobility()
 mobility.compute()
 
+# reward
+print ("start reward")
+reward=Reward(config,network,individuals)
+
+
+step=1
+reward.computeReward(step)
 
 
 

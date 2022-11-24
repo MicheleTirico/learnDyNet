@@ -16,12 +16,13 @@
     <simulation>
         <parameter name="numsim">10  </parameter> <!-- 1 means we do only the first sim (named sim-0000) -->
         <parameter name="initState"> w1</parameter> <!-- random or fix a kind of state. if random, do not need set value, otherwise set init state type -->
-        <parameter name="initStateMode">same</parameter>
+        <parameter name="initStateMode">random</parameter> <!-- or same -->
+        <parameter name="seedInitStateMode">1</parameter>
     </simulation>
 
     <mobility>
         <parameter name="typeInitIndividuals">random</parameter>
-        <parameter name="percentIndividuals">0.4</parameter>
+        <parameter name="percentIndividuals">0.8</parameter>
         <parameter name="alpha">0.5</parameter>
         <parameter name="typeMobilityModel">discreteModeChoice</parameter>
         <parameter name="val_weigth_out">0</parameter>

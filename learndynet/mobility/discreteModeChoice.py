@@ -7,13 +7,6 @@ class DiscreteModeChoice:
         self.__network=network
         self.__individuals=individuals
 
-    def initDMC(self):
-        pass
-
-    def __computeShortestPath(self):
-        pass
-
-
 def __test(run):
     if run:
         url="/media/mtirico/DATA/project/learnDyNet/learnDyNet/scenarios/grid_01/config.xml"
