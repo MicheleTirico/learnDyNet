@@ -30,15 +30,21 @@
 
     <network>
         <parameter name="typeNetwork" type="val">grid</parameter>
-        <parameter name="dimension_x" type="grid">4</parameter>
-        <parameter name="dimension_y" type="grid">4</parameter>
+        <parameter name="dimension_x" type="grid">2</parameter>
+        <parameter name="dimension_y" type="grid">2</parameter>
         <parameter name="dist_x" type="grid">2</parameter>
         <parameter name="dist_y" type="grid">3</parameter>
     </network>
 
 
     <learning>
-
+        <parameter name="typelearning">qtable</parameter>   <!-- options: qtable,random (does not work)-->
+        <parameter name="randomseed">2</parameter>          <!-- to use when you use the random type of learning. If empty, no seed are fixed -->
+        <parameter name="gamma">0.5</parameter>             <!-- discount factor. High values mean agent looking for reward in long time -->
+        <parameter name="epsilonmin">0.1</parameter>        <!-- minimum probability of exploration (e-greedy policy). High values of epsilon means more exploration -->
+        <parameter name="alpha">0.1</parameter>             <!-- learning rate. High values mean more learning. -->
+        <parameter name="roundqvalue"> 3 </parameter>       <!-- round the values of scores to put in qtable -->
+        <parameter name="rewardNoScore"> -100 </parameter>  <!-- in the case of the no reward (score) are available at the step x, we give a fixed reward -->
     </learning>
 
 </data>

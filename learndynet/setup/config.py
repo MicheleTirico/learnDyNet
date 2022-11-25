@@ -37,8 +37,14 @@ class Config:
         self.initState=             self.__getVal("simulation","parameter","initState")
         self.seedInitStateMode=     int(self.__getVal("simulation","parameter","seedInitStateMode"))
 
-
-
+        # learning
+        self.typelearning=          self.__getVal("learning","parameter","typelearning")
+        self.randomseed=            self.__getVal("learning","parameter","randomseed")
+        self.gamma=                 self.__getVal("learning","parameter","gamma")
+        self.epsilonmin=            self.__getVal("learning","parameter","epsilonmin")
+        self.alpha=                 self.__getVal("learning","parameter","alpha")
+        self.roundqvalue=           self.__getVal("learning","parameter","roundqvalue")
+        self.rewardNoScore=         self.__getVal("learning","parameter","rewardNoScore")
 
         # mobility parameters
         self.typeInitIndividuals=   self.__getVal("mobility","parameter","typeInitIndividuals")

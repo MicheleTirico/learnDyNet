@@ -1,4 +1,4 @@
-"""
+
 import math
 
 import networkx as nx
@@ -11,51 +11,85 @@ class Agents:
         self.__network=network
         self.__stateSet=stateSet
         self.__agents={}
+        self.__G= self.__network.getGraph()
 
     def initAgents(self):
-        if self.__config.initStateMode=="same": self.__initStatesSame()
+        for edge in self.__G.edges(data=True):
+            fun= edge[2]["edge_function"]
+            id=edge[2]["id"]
 
-    def __initStatesSame(self):
-        self.__G=self.__network.getGraph()
-        state=self.__stateSet.getState(self.__config.initState)
-        state_name=state.getName()
-        lines=state.getLines()
-        edges=list(self.__G.edges)
+            if fun=="state":
+                state=edge[2]["state"]
+                agent=Agent(id)
+                agent.setStates(0,state) # is the same of agent.appendState(state)
+                agent.setListStates(self.__stateSet.getListStates())
+                self.__agents[(edge[0],edge[1])]=agent
 
-        # set attributes for edge state
-        qtab=np.zeros(shape=(self.__stateSet.getNstates(),self.__stateSet.getNstates()))
-        nx.set_edge_attributes(self.__G,qtab,"qtab")
-        nx.set_edge_attributes(self.__G,"state","edge_function")
-        nx.set_edge_attributes(self.__G,[state_name],"state")
-        # create edge sim and add attrib
-        id_sim=0
-        for e in edges:
+    def getAgent(self,edge_0,edge_1):
+        try:    return self.__agents[(edge_0,edge_1)]
+        except KeyError:
+            return self.__agents[(edge_1,edge_0)]
+    def getAgents(self):     return self.__agents
 
-            length=self.__G.edges[e]["length"]
-            for line in lines:
-                for nLines in range(0,int(line[1])):
-                    if line[3]=="from-to":
-                        self.__G.add_edge(e[0],e[1],id_sim=id_sim,modes=line[0],cost=line[2],edge_function="sim",length=length)
-                    else:
-                        self.__G.add_edge(e[1],e[0],id_sim=id_sim,modes=line[0],cost=line[2],edge_function="sim",length=length)
-                    id_sim+=1
+    def updateReward(self,step):
+        for id , agent in self.__agents.items():
+            num_ind=agent.get_num_ind_pos(step)
+            sum_utility=agent.get_sum_utility_pos(step)
+            agent.append_reward(round(sum_utility/num_ind,3))
 
 class Agent:
-    def __init__(self,name):
-        self.__name=name
+    def __init__(self,id):
+        self.__id=id
         self.__states=[]
-        self.__qtab=[]
-        self.__state=""
-        self.__qvalue=0
-        self.__qvalues=[]
-        self.__nodes=[]
+        self.__num_ind=[0]
+        self.__sum_utility=[0]
+        self.__reward=[]
+        self.__listStates=[]
+        self.__qTab=np.zeros(shape=(len(self.__listStates),len(self.__listStates)))
+
+    def getMap(self):   return {"id":self.__id,"states":self.__states,"num_ind":self.__num_ind,"sum_utility":self.__sum_utility,"reward":self.__reward}
 
     # TODO: add all other values, init qtab
-    def setNodes(self,nodes):           self.__nodes=nodes
-    def setQvalue(self,qvalue):         self.__qvalue=qvalue
-    def setState(self,state):           self.__state=state
-    def setStates(self,pos,state):      self.__states[pos]=state
+    def setStates(self,pos,state):
+        if len(self.__states)==0: self.appendState(state)
+        else:        self.__states[pos]=state
     def appendState(self,state):        self.__states.append(state)
-    def appendQvalue(self,qvalue):      self.__qvalues.append(qvalue)
+    def getStates(self):            return self.__states
 
-"""
+    def set_num_ind(self,pos,num_ind):
+        if len(self.__num_ind)==0: self.append_num_ind(num_ind)
+        else:        self.__num_ind[pos]=num_ind
+    def append_num_ind(self,num_ind):        self.__num_ind.append(num_ind)
+
+    def set_sum_utility(self,pos,sum_utility):
+        if len(self.__sum_utility)==0: self.append_sum_utility(sum_utility)
+        else:        self.__sum_utility[pos]=sum_utility
+    def append_sum_utility(self,sum_utility):        self.__sum_utility.append(sum_utility)
+
+    def set_reward(self,pos,reward):
+        if len(self.__reward)==0: self.append_reward(reward)
+        else:        self.__reward[pos]=reward
+    def append_reward(self,reward):        self.__reward.append(reward)
+
+    def get_sum_utility(self):        return self.__sum_utility
+    def get_num_ind(self):        return self.__num_ind
+    def get_reward(self):        return self.__reward
+
+    def get_num_ind_pos(self,pos):
+        try: return self.__num_ind[pos]
+        except IndexError:
+            self.__num_ind.append(0)
+            return self.__num_ind[pos]
+    def get_sum_utility_pos(self,pos):
+        try: return self.__sum_utility[pos]
+        except IndexError:
+            self.__sum_utility.append(0)
+            return self.__sum_utility[pos]
+    def get_reward_pos(self,pos):
+        try: return self.__reward[pos]
+        except IndexError:
+            self.__reward.append(0)
+            return self.__reward[pos]
+
+    def setListStates(self, listStates):    self.__listStates=listStates
+

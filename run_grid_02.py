@@ -3,6 +3,7 @@ from learnDyNet.learndynet.learning.qLearning import QLearning
 from learnDyNet.learndynet.mobility.mobility import Mobility
 #from learnDyNet.learndynet.setup.agents import Agents
 from learnDyNet.learndynet.reward.reward import Reward
+from learnDyNet.learndynet.setup.agents import Agents
 from learnDyNet.learndynet.setup.config import Config
 from learnDyNet.learndynet.setup.controller import Controller
 from learnDyNet.learndynet.network.network import Network
@@ -30,11 +31,20 @@ network.initAgents()
 network.setWeights()
 print ("end network")
 
+# agents
+print ("agents")
+agents=Agents(config,network,stateSet)
+agents.initAgents()
+
 # individuals
 individuals=Individuals(config,network)
 individuals.initIndividuals()
 print ("end individuals")
 
+mobility=Mobility(config,network,individuals)
+mobility.initMobility()
+reward=Reward(config,network,individuals,agents)
+learning=QLearning(config,network,agents)
 
 step =0
 while step < 5:
@@ -42,18 +52,14 @@ while step < 5:
     # mobility
 
     print ("start mobility")
-    mobility=Mobility(config,network,individuals)
-    mobility.initMobility()
     mobility.compute()
 
     # reward
     print ("start reward")
-    reward=Reward(config,network,individuals)
     reward.computeReward(step)
 
     # compute learning
     print ("compute learning")
-    learning=QLearning(config,network)
     learning.computeLearning(step)
     step+=1
 

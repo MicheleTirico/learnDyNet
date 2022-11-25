@@ -2,46 +2,95 @@ import networkx as nx
 
 
 class Reward:
-    def __init__(self,config,network,individuals):
+    def __init__(self,config,network,individuals,agents):
         self.__config=config
         self.__network=network
         self.__individuals=individuals
+        self.__agents=agents
 
     def computeReward(self,step):
         G=self.__network.getGraph()
         list_ed_state=[]
         num_ind=[]
         mapEdges={}
+        # compute reward and set vals
         for id , individual in self.__individuals.getIndividuals().items():
             utilities=individual.getUtilities()
             utility,posMode=self.__getMaxMode(utilities)
             if type(utility)!=str:
                 sp=individual.getSp()[posMode]
                 for t in sp:
-                    print (t)
                     i=1
                     while i < len(t):
                         edge=(t[i-1],t[i])
-                        print (edge)
+                        agent=self.__agents.getAgent(edge[0],edge[1])
+
+                        old_num_ind=agent.get_num_ind_pos(step)
+                        new_num_ind=old_num_ind+1
+                        agent.set_num_ind(step,new_num_ind)
+
+                        old_sum_utility=agent.get_sum_utility_pos(step)
+                        new_sum_utility=round(old_sum_utility+utility,2)
+                        agent.set_sum_utility(step,new_sum_utility)
+                    #    print (agent.get_num_ind(),agent.get_sum_utility())
+                        i+=1
+
+        self.__agents.updateReward(step)
+#        for id,agent in self.__agents.getAgents().items():print (id,agent.get_reward(),agent.get_num_ind(),agent.get_sum_utility())
+
+
+
+    def computeRewardold2(self,step):
+        G=self.__network.getGraph()
+        list_ed_state=[]
+        num_ind=[]
+        mapEdges={}
+        # compute reward and set vals
+        for id , individual in self.__individuals.getIndividuals().items():
+            utilities=individual.getUtilities()
+            utility,posMode=self.__getMaxMode(utilities)
+            if type(utility)!=str:
+                sp=individual.getSp()[posMode]
+                for t in sp:
+                    i=1
+                    while i < len(t):
+                        edge=(t[i-1],t[i])
                         try:
-                            num_ind_old=mapEdges[edge]["num_ind"]
-                            sum_utility_old=mapEdges[edge]["sum_utility"]
+                            num_ind_old=mapEdges[edge]["num_ind"][step]
+                            sum_utility_old=mapEdges[edge]["sum_utility"][step]
                             num_ind_new=num_ind_old+1
                             sum_utility_new=sum_utility_old+utility
 
-                            mapEdges[edge]["num_ind"]=num_ind_new
-                            mapEdges[edge]["sum_utility"]=sum_utility_new
-                            mapEdges[edge]["reward"]=sum_utility_new/num_ind_new
+                            mapEdges[edge]["num_ind"]=[num_ind_new]
+                            mapEdges[edge]["sum_utility"]=[sum_utility_new]
+                            mapEdges[edge]["reward"]=[round(sum_utility_new/num_ind_new,3)]
 
                         except KeyError:
-                            mapEdges[edge]={"num_ind":1,"sum_utility":utility,"reward":utility}
+                            mapEdges[edge]={"num_ind":[1],"sum_utility":[utility],"reward":[utility]}
+                        except IndexError:
+                            num_ind_old=mapEdges[edge]["num_ind"]
+                            sum_utility_old=mapEdges[edge]["sum_utility"]
+                            reward_old=mapEdges[edge]["reward"]
+                            num_ind_old.append(1)
+                            sum_utility_old.append(utility)
 
+                            print (reward_old)
+                            mapEdges[edge]["num_ind"]=num_ind_old
+                            mapEdges[edge]["sum_utility"]=sum_utility_old
+                            mapEdges[edge]["reward"]=reward_old.append(round(utility,3))
                         i+=1
 
+        # set vals in edges
+        for edge in G.edges:
+           # print (edge)
+            try:
+                vals=mapEdges[(edge[0],edge[1])]
+            #    print (vals)
+                G.edges[edge]["num_ind"]=vals["num_ind"]
+                G.edges[edge]["sum_utility"]=vals["sum_utility"]
+                G.edges[edge]["reward"]=vals["reward"]
+            except KeyError:        pass#    print ("no edge")
 
-        for k,v in mapEdges.items():
-            print(k,v)
-            e=G.edges[k[0],k[1]]
 
     def computeRewardold(self,step):
         G=self.__network.getGraph()

@@ -45,8 +45,8 @@ class Mobility():
             individual.setSp([sp_walk,sp_bike,sp_car])
             individual.setUtilities([utility_walk,utility_bike,utility_car])
 
-            print(sp_walk,sp_bike,sp_car,sep="\n")
-            print(utility_walk,utility_bike,utility_car,sep="\n")
+        #    print(sp_walk,sp_bike,sp_car,sep="\n")
+        #    print(utility_walk,utility_bike,utility_car,sep="\n")
             """
 
             compute shortest path of first part 
