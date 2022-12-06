@@ -32,25 +32,43 @@ class Config:
         self.pathStates=self.pathScenario+self.__getVal("urls","url","states")
 
         # parameters simulation
-        self.numSim=                self.__getVal("simulation","parameter","numsim")
+        self.numStep=               int(self.__getVal("simulation","parameter","numStep"))
         self.initStateMode=         self.__getVal("simulation","parameter","initStateMode")
-        self.initState=             self.__getVal("simulation","parameter","initState")
+        self.initState=             int(self.__getVal("simulation","parameter","initState"))
         self.seedInitStateMode=     int(self.__getVal("simulation","parameter","seedInitStateMode"))
 
         # learning
         self.typelearning=          self.__getVal("learning","parameter","typelearning")
         self.randomseed=            self.__getVal("learning","parameter","randomseed")
-        self.gamma=                 self.__getVal("learning","parameter","gamma")
-        self.epsilonmin=            self.__getVal("learning","parameter","epsilonmin")
-        self.alpha=                 self.__getVal("learning","parameter","alpha")
+        self.learning_gamma=        float(self.__getVal("learning","parameter","learning_gamma"))
+        self.epsilonmin=            float(self.__getVal("learning","parameter","epsilonmin"))
+        self.learning_alpha=        float(self.__getVal("learning","parameter","learning_alpha"))
         self.roundqvalue=           self.__getVal("learning","parameter","roundqvalue")
         self.rewardNoScore=         self.__getVal("learning","parameter","rewardNoScore")
+        """
+        self.seedRandomAction=      int(self.__getVal("learning","parameter","seedRandomAction"))
+        self.seedRandomState=       int(self.__getVal("learning","parameter","seedRandomState"))
+        self.seedRandomMode=        int(self.__getVal("learning","parameter","seedRandomMode"))
+        self.seedRandomDirection=   int(self.__getVal("learning","parameter","seedRandomDirection"))
+        """
+        self.rdSelectAction=        int(self.__getVal("learning","parameter","rdSelectAction"))
+        self.actionModeSelection=   self.__getVal("learning","parameter","actionModeSelection")
+        self.numStates=0
+        self.numActions=0
 
         # mobility parameters
         self.typeInitIndividuals=   self.__getVal("mobility","parameter","typeInitIndividuals")
         self.percentIndividuals=    float(self.__getVal("mobility","parameter","percentIndividuals"))
         self.typeMobilityModel=     self.__getVal('mobility',"parameter","typeMobilityModel")
-        self.val_weigth_out=        float(self.__getVal("mobility","parameter","val_weigth_out"))
+        self.val_weight_out=        float(self.__getVal("mobility","parameter","val_weight_out"))
+        self.modes=                 (self.__getVal("mobility","parameter","modes")).split(",")
+        self.directions=            (self.__getVal("mobility","parameter","directions")).split(",")
+        self.maxNumberOfEdges=      int(self.__getVal("mobility","parameter","maxNumberOfEdges"))
+        self.cost_walk=             float(self.__getVal("mobility","parameter","cost_walk"))
+        self.cost_bike=             float(self.__getVal("mobility","parameter","cost_bike"))
+        self.cost_car=             float(self.__getVal("mobility","parameter","cost_car"))
+        self.multipleIndividualsOverVertex=bool(self.__getVal("mobility","parameter","multipleIndividualsOverVertex"))
+        self.rewardNoTripFunded=    float(self.__getVal("mobility","parameter","rewardNoTripFunded"))
 
         # network parameters
         self.typeNetwork=           self.__getValType("network","parameter","typenetwork","val")
@@ -59,6 +77,7 @@ class Config:
         self.graph_grid_dimension_y=int(self.__getValType("network","parameter","dimension_y","grid"))
         self.graph_grid_dist_x=float(self.__getValType("network","parameter","dist_x","grid"))
         self.graph_grid_dist_y=float(self.__getValType("network","parameter","dist_y","grid"))
+
 
 
 

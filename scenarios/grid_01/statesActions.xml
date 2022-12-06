@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- note
+-->
+<states>
+    <state name="w1">
+        <description>one line for pedestrian </description>
+        <actions allowedModes="walk,bike,car" allowedDirections="both"/>
+        <line modes="walk" lines="1" dir="to-from"/>
+        <line modes="walk" lines="1" dir="from-to"/>
+    </state>
+    <state name="b1">
+        <description>two lines for bike </description>
+        <actions allowedModes="walk,bike,car" allowedDirections="both"/>
+        <line modes="bike" lines="1" dir="to-from" />
+        <line modes="bike" lines="1" dir="from-to" />
+    </state>
+    <state name="b2">
+        <description>two lines for bike </description>
+        <actions allowedModes="walk,bike,car" allowedDirections="both"/>
+        <line modes="bike" lines="1" dir="from-to"/>
+    </state>
+    <state name="b3">
+        <description>two lines for bike </description>
+        <actions allowedModes="walk,bike,car" allowedDirections="both"/>
+        <line modes="bike" lines="1" dir="to-from" />
+    </state>
+    <state name="c1">
+        <description>two lines for bike </description>
+        <actions allowedModes="walk,bike,car" allowedDirections="both"/>
+        <line modes="car" lines="1" dir="to-from" />
+        <line modes="car" lines="1" dir="from-to" />
+    </state>
+    <state name="c2">
+        <description>two lines for bike </description>
+        <line modes="car" lines="1" dir="from-to"/>
+    </state>
+    <state name="c3">
+        <description>two lines for bike </description>
+        <line modes="car" lines="1" dir="to-from" />
+    </state>
+</states>
+
+
+
+<!--
+        <actions allowedMode="walk,car,bike" allowedNLines="2" allowedDirections="both" allowedStates="b1,b2,c1,c2"/>
+        <allowedstates allowedStates="b1,b2,c1,c2"/>
+-->

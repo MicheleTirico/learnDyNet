@@ -9,6 +9,35 @@ class Reward:
         self.__agents=agents
 
     def computeReward(self,step):
+        G=self.__network.getGraphSim(step)
+        for id , individual in self.__individuals.getIndividuals().items():
+            utilities=individual.getUtilities()
+            utility,posMode=self.__getMaxMode(utilities)
+            if type(utility)!=str:
+                sp=individual.getSp()[posMode]
+                if type(utility)!=str:
+                    sp=individual.getSp()[posMode]
+                for t in sp:
+                    i=1
+                    while i < len(t):
+                        edge=(t[i-1],t[i])
+                        agent=self.__agents.getAgentVertices(edge[0],edge[1])
+                        old_num_ind=agent.get_num_ind_pos(step)
+                        new_num_ind=old_num_ind+1
+                        agent.set_num_ind(step,new_num_ind)
+                        old_sum_utility=agent.get_sum_utility_pos(step)
+                        new_sum_utility=round(old_sum_utility+utility,2)
+                        agent.set_sum_utility(step,new_sum_utility)
+                        i+=1
+
+        self.__agents.updateReward(step)
+
+    def displayRewards(self):
+        for id in self.__agents.getAgents():
+            agent=self.__agents.getAgents()[id]
+            print (id,agent.get_reward())
+
+    def computeRewardold3(self,step):
         G=self.__network.getGraph()
         list_ed_state=[]
         num_ind=[]

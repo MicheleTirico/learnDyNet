@@ -4,22 +4,43 @@
 <states>
     <state name="w1">
         <description>one line for pedestrian </description>
-        <line modes="walk" lines="1" cost="0.1" dir="to-from"/>
+        <line modes="walk" lines="1" dir="to-from"/>
     </state>
-    <state name="b1">
-        <description>two lines for bike </description>
-        <line modes="bike" lines="1" cost="0.3" dir="from-to"/>
-        <line modes="bike" lines="1" cost="0.3" dir="to-from"/>
-
-    </state>
-    <state name="wb1">
+    <state name="w2">
         <description>one line for pedestrian </description>
-        <line modes="walk" lines="1" cost="0.1" dir="to-from"/>
-        <line modes="bike" lines="1" cost="0.3" dir="from-to"/>
-        <line modes="bike" lines="1" cost="0.3" dir="to-from"/>
+        <line modes="walk" lines="1" dir="from-to"/>
     </state>
-    <state name="c1">
-        <description>car line</description>
-        <line modes="car" lines="1" cost="0.5" dir="from-to"/>
+    <state name="w3">
+        <description>one line for pedestrian </description>
+        <line modes="walk" lines="1" dir="to-from"/>
+        <line modes="walk" lines="1" dir="from-to"/>
+    </state>
+
+    <state name="b1">
+        <description>one line for pedestrian </description>
+        <line modes="bike" lines="1" dir="to-from"/>
+    </state>
+    <state name="w2">
+        <description>one line for pedestrian </description>
+        <line modes="walk" lines="1" dir="from-to"/>
+    </state>
+    <state name="w3">
+        <description>one line for pedestrian </description>
+        <line modes="walk" lines="1" dir="to-from"/>
+        <line modes="walk" lines="1" dir="from-to"/>
+    </state>
+
+    <state name="w1">
+        <description>one line for pedestrian </description>
+        <line modes="walk" lines="1" dir="to-from"/>
+    </state>
+    <state name="w2">
+        <description>one line for pedestrian </description>
+        <line modes="walk" lines="1" dir="from-to"/>
+    </state>
+    <state name="w3">
+        <description>one line for pedestrian </description>
+        <line modes="walk" lines="1" dir="to-from"/>
+        <line modes="walk" lines="1" dir="from-to"/>
     </state>
 </states>

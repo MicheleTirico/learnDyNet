@@ -1,9 +1,7 @@
-
-import math
+import copy
 
 import networkx as nx
 import numpy as np
-
 
 class Agents:
     def __init__(self,config,network,stateSet):
@@ -13,48 +11,135 @@ class Agents:
         self.__agents={}
         self.__G= self.__network.getGraph()
 
-    def initAgents(self):
-        for edge in self.__G.edges(data=True):
-            fun= edge[2]["edge_function"]
-            id=edge[2]["id"]
+    def initAgents(self):        self.__initAgents_mode(self.__config.initStateMode)
 
-            if fun=="state":
-                state=edge[2]["state"]
-                agent=Agent(id)
-                agent.setStates(0,state) # is the same of agent.appendState(state)
-                agent.setListStates(self.__stateSet.getListStates())
-                self.__agents[(edge[0],edge[1])]=agent
+    def __initAgents_mode(self,mode):
+        # attrib agents
+        attr_id=nx.get_edge_attributes(self.__G,"id")
+        attr_length=nx.get_edge_attributes(self.__G,"length")
+        for e in attr_id.keys():        #
+            # get state
+            state=None
+            if mode=="same":            state=self.__stateSet.getState(self.__config.initState)
+            elif mode=="random":        state=self.__stateSet.getRandomState()
+            agent=Agent(attr_id[e],self.__config,self.__network,self.__stateSet)
+            agent.setLength(attr_length[e])
+            agent.setVertices(e[0],e[1])
+            agent.appendState(state)
+        #    agent.initQtab(self.__config.numStep,self.__config.numStates,self.__config.numActions)
+         #   agent.initQtabMap(self.__config.numStep,self.__config.numStates,self.__config.numActions)
+            agent.initQtabList(self.__config.numStates,self.__config.numActions)
+            self.__agents[attr_id[e]]=agent
 
-    def getAgent(self,edge_0,edge_1):
-        try:    return self.__agents[(edge_0,edge_1)]
-        except KeyError:
-            return self.__agents[(edge_1,edge_0)]
-    def getAgents(self):     return self.__agents
+    def getAgents(self):        return self.__agents
+    def getAgent(self,id):      return self.__agents[id]
+    def getAgentVertices(self,v0,v1):
+        for id in self.__agents:
+            a=self.__agents[id]
+            vertices=a.getVertices()
+            if (v0==vertices[0] and v1==vertices[1]) or (v0==vertices[1] and v1==vertices[0]):                return a
 
     def updateReward(self,step):
         for id , agent in self.__agents.items():
             num_ind=agent.get_num_ind_pos(step)
             sum_utility=agent.get_sum_utility_pos(step)
-            agent.append_reward(round(sum_utility/num_ind,3))
+            if sum_utility==0:          sum_utility=self.__config.rewardNoTripFunded
+            try:                        agent.append_reward(round(sum_utility/num_ind,3))
+            except ZeroDivisionError:   agent.append_reward(sum_utility)
 
-class Agent:
-    def __init__(self,id):
+class Agent(Agents):
+    def __init__(self,id,config,network,stateSet):
+        super().__init__(config, network,stateSet)
+        self.__config=config
+        self.__network=network
+        self.__stateSet=stateSet
         self.__id=id
+        self.__vertices=()
+        self.__length=0
         self.__states=[]
+        self.__statesPos=[]
+        self.__reward=[]
         self.__num_ind=[0]
         self.__sum_utility=[0]
-        self.__reward=[]
-        self.__listStates=[]
-        self.__qTab=np.zeros(shape=(len(self.__listStates),len(self.__listStates)))
+        self.__actions=[]
+        self.__numStep=self.__config.numStep
+        self.__stateTested=[]
+        self.__qtabMap={}
+        self.__qtabList=[[[]]]
 
-    def getMap(self):   return {"id":self.__id,"states":self.__states,"num_ind":self.__num_ind,"sum_utility":self.__sum_utility,"reward":self.__reward}
+    def getListStateNotTested(self):
+        for state in self.__states:
+            statePos=self.__stateSet.getStatePos(state)
+            self.__statesPos.append(statePos)
+        self.__stateTested=[*set(self.__statesPos)]
+        return self.__stateTested
+# list
+    def initQtabList(self,numStates,numActions):
+        self.__qtabList[0]=[[0 for _ in range(numActions)] for _ in range(numStates)]
 
-    # TODO: add all other values, init qtab
-    def setStates(self,pos,state):
-        if len(self.__states)==0: self.appendState(state)
-        else:        self.__states[pos]=state
-    def appendState(self,state):        self.__states.append(state)
-    def getStates(self):            return self.__states
+    def getQtabList(self):       return self.__qtabList
+
+    def setQtabList(self,step,statePos,actionPos,qval):
+        tab=copy.deepcopy(self.__qtabList[step-1])
+        tab[statePos][actionPos]=round(qval,3)
+        self.__qtabList.append(tab)
+    """
+    # map
+    def initQtabMap(self,numSims,numStates,numActions):
+        for step in range (numSims): self.__qtabMap[step]=[[0 for _ in range(numActions)] for _ in range(numStates)]
+
+    def getQtabMap(self):       return self.__qtabMap
+
+    def setQvalMap(self,step,statePos,actionPos,qval):
+        self.__qtabMap[step][statePos][actionPos]=-10000
+
+    def getQvalActions(self,step,action):
+        tab=self.__qtabMap[step]
+        line=tab[action]
+        return line
+
+
+    def getQvalMapActions(self,step,action):
+        tab=self.__qtabMap[step]
+        line=tab[action]
+        return line
+
+    def initQtab(self,numSims,numStates,numActions):
+        self.__qtab=np.zeros(shape=(numSims,numStates,numActions))
+
+    def getQtab(self):        return self.__qtab
+
+    def setQval(self,step,statePos,actionPos,qval):
+        self.__qtab[step][statePos][actionPos]=qval
+    
+
+
+    def getQvalActions(self,step,action):
+        tab=self.__qtab[step]
+        line=tab[action]
+        return line
+    """
+
+    # display
+    # ---------------------------------------------------------------------------------------
+    def displayQtable(self):    print (self.__qtab)
+    def displayQtableStep(self):
+        for step in range(len(self.__qtab)):    print ("step:",step,"\n",self.__qtab[step])
+
+    def getActions(self):           return self.__actions
+    def getActionPos(self,pos):     return self.__actions[pos]
+    def appendAction(self,action): self.__actions.append(action)
+
+
+    def getVertices(self):          return self.__vertices
+    def setVertices(self,v0,v1):   self.__vertices=(v0,v1)
+
+    def setLength(self,length):   self.__length=length
+    def getLength(self):            return self.__length
+
+    def appendState(self,state):   self.__states.append(state)
+    def getStates(self):           return self.__states
+    def getState(self,step):        return self.__states[step]
 
     def set_num_ind(self,pos,num_ind):
         if len(self.__num_ind)==0: self.append_num_ind(num_ind)
@@ -90,6 +175,4 @@ class Agent:
         except IndexError:
             self.__reward.append(0)
             return self.__reward[pos]
-
-    def setListStates(self, listStates):    self.__listStates=listStates
 
