@@ -11,6 +11,9 @@ class Agents:
         self.__agents={}
         self.__G= self.__network.getGraph()
 
+    def setMobility(self,mobility):     self.__mobility=mobility
+    def setIndividuals(self,individuals):     self.__individuals=individuals
+
     def initAgents(self):        self.__initAgents_mode(self.__config.initStateMode)
 
     def __initAgents_mode(self,mode):
@@ -43,8 +46,12 @@ class Agents:
         for id , agent in self.__agents.items():
             num_ind=agent.get_num_ind_pos(step)
             sum_utility=agent.get_sum_utility_pos(step)
-            if sum_utility==0:          sum_utility=self.__config.rewardNoTripFunded
-            try:                        agent.append_reward(round(sum_utility/num_ind,3))
+            #   print (self.__mobility.getNumberTripNotFunded()[step-1],len(self.__individuals.getIndividuals()))
+            penalty=self.__mobility.getNumberTripNotFunded()[step-1]/(3*len(self.__individuals.getIndividuals()))
+            #if sum_utility==0:   sum_utility=self.__config.rewardNoTripFunded
+            try:
+                agent.append_reward(round(penalty*sum_utility/num_ind,3))
+           #     print ("reward",penalty,round(sum_utility/num_ind,3))
             except ZeroDivisionError:   agent.append_reward(sum_utility)
 
 class Agent(Agents):
@@ -67,6 +74,7 @@ class Agent(Agents):
         self.__qtabMap={}
         self.__qtabList=[[[]]]
 
+    def getId(self):            return id
     def getListStateNotTested(self):
         for state in self.__states:
             statePos=self.__stateSet.getStatePos(state)
@@ -83,42 +91,6 @@ class Agent(Agents):
         tab=copy.deepcopy(self.__qtabList[step-1])
         tab[statePos][actionPos]=round(qval,3)
         self.__qtabList.append(tab)
-    """
-    # map
-    def initQtabMap(self,numSims,numStates,numActions):
-        for step in range (numSims): self.__qtabMap[step]=[[0 for _ in range(numActions)] for _ in range(numStates)]
-
-    def getQtabMap(self):       return self.__qtabMap
-
-    def setQvalMap(self,step,statePos,actionPos,qval):
-        self.__qtabMap[step][statePos][actionPos]=-10000
-
-    def getQvalActions(self,step,action):
-        tab=self.__qtabMap[step]
-        line=tab[action]
-        return line
-
-
-    def getQvalMapActions(self,step,action):
-        tab=self.__qtabMap[step]
-        line=tab[action]
-        return line
-
-    def initQtab(self,numSims,numStates,numActions):
-        self.__qtab=np.zeros(shape=(numSims,numStates,numActions))
-
-    def getQtab(self):        return self.__qtab
-
-    def setQval(self,step,statePos,actionPos,qval):
-        self.__qtab[step][statePos][actionPos]=qval
-    
-
-
-    def getQvalActions(self,step,action):
-        tab=self.__qtab[step]
-        line=tab[action]
-        return line
-    """
 
     # display
     # ---------------------------------------------------------------------------------------

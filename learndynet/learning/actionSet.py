@@ -32,11 +32,12 @@ class ActionSet:
                         "rem_2_ed_walk_from-to",
                         "rem_2_ed_walk_to-from",
                         "rem_2_ed_bike_from-to",
-                        "rem_2_ed_bike_to-from",
-                        "rem_2_ed_car_from-to", #20
+                        "rem_2_ed_bike_to-from", #25
+                        "rem_2_ed_car_from-to",
                         "rem_2_ed_car_to-from",
                          ]
         self.__config.numActions=len(self.__actions)
+
     def getAction(self,pos): return self.__actions[pos]
     def getActions(self):       return self.__actions
 

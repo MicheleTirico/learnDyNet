@@ -127,9 +127,9 @@ class StateSet:
         return l
 
     def __getCost(self,mode):
-        if mode=="walk":    return self.__config.cost_walk
-        elif mode=="bike":   return self.__config.cost_bike
-        else:               return self.__config.cost_car
+        if mode=="walk":    return self.__config.cost[0]
+        elif mode=="bike":   return self.__config.cost[1]
+        else:               return self.__config.cost[2]
 
 class State:
     def __init__(self,idState,mode,direction,cost,nEdgePerDirection):

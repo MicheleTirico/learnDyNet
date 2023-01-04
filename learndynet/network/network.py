@@ -41,12 +41,16 @@ class Network ():
             length=agent.getLength()
 
             for ed in state:
-                mode,dir,cost=ed[0],ed[1],ed[2]
+                mode,dir,cost=ed[0],ed[1],float(ed[2])
                 if dir=='from-to':  v0,v1=vertices[0],vertices[1]
                 else:               v0,v1=vertices[1],vertices[0]
-                weight_walk,weight_bike,weight_car=0,0,0
+                noWeightVal=self.__config.length_out
+                weight_walk,weight_bike,weight_car=noWeightVal,noWeightVal,noWeightVal
                 if      mode=="walk":   weight_walk=cost*length
                 elif    mode=="bike":   weight_bike=cost*length
-                else: weight_car=cost*length
-                G_sim.add_edge(v0,v1,length=length,mode=mode,cost=cost,weight=cost*length,weight_walk=weight_walk,weight_bike=weight_bike,weight_car=weight_car)
+                else:                   weight_car=cost*length
+#                print (ed,length,dir,cost,weight_walk,weight_bike,weight_car)
+                G_sim.add_edge(v0,v1,length=length,weight_walk=weight_walk,weight_bike=weight_bike,weight_car=weight_car)# mode=mode,cost=cost,weight=cost*length
+
         self.__G_sim[step]=G_sim
+        # quit()

@@ -1,23 +1,23 @@
 # simulation grid
+from learnDyNet.learndynet.analysis.plotRewardPerAgent import PlotRewardPerAgent
 from learnDyNet.learndynet.learning.learning import Learning
 from learnDyNet.learndynet.mobility.mobility import Mobility
 from learnDyNet.learndynet.reward.reward import Reward
-from learnDyNet.learndynet.setup.actionSet import ActionSet
-from learnDyNet.learndynet.setup.agents import Agents
+from learnDyNet.learndynet.learning.actionSet import ActionSet
+from learnDyNet.learndynet.learning.agents import Agents
 from learnDyNet.learndynet.setup.config import Config
 from learnDyNet.learndynet.setup.controller import Controller
 from learnDyNet.learndynet.network.network import Network
 from learnDyNet.learndynet.network.networkGrid import NetworkGrid
-from learnDyNet.learndynet.setup.individuals import Individuals
-from learnDyNet.learndynet.setup.stateSet import StateSet
+from learnDyNet.learndynet.mobility.individuals import Individuals
+from learnDyNet.learndynet.learning.stateSet import StateSet
+from learnDyNet.learndynet.storeOutputs.storeAgents import StoreAgents
 
 pathConfig="/media/mtirico/DATA/project/learnDyNet/learnDyNet/scenarios/grid_01/config.xml"
 
 # init config
 print("start config and controller")
 config=Config(pathConfig)
-controller=Controller(config)
-controller.initSimulation()
 
 # stateSet
 print("start states")
@@ -53,11 +53,17 @@ learning=Learning(config,network,stateSet,actionSet,agents)
 print ("init individuals")
 individuals=Individuals(config,network)
 individuals.initIndividuals()
+agents.setIndividuals(individuals)
+
+
+for id, ind in individuals.getIndividuals().items():
+    print (id, ind.getTheta())
 
 # mobility
 print ("init mobility")
 mobility=Mobility(config,network,individuals)
 mobility.initMobility()
+agents.setMobility(mobility)
 
 # reward
 print ("init reward")
@@ -67,49 +73,28 @@ print ("create network")
 network.createNetwork(0)
 network.displayGraphSimInfo(0)
 
-print ("\n------------------------ start simulation ------------------------------------\n")
-step =1
-while step < config.numStep:
-    print ("------------------------- step", step,"---------------------------------------------")
-    #network.displayGraphSimInfo(step-1)
+controller=Controller(config,learning,network,mobility,reward)
+controller.initSimulation()
 
-    # select actions
-    learning.selectActions(step)
-
-    # create network
-    print ("create network")
-    network.createNetwork(step)
- #   network.displayGraphSimInfo(step)
-
-    # mobility
-    print ("compute mobility")
-    mobility.compute(step)
-
-    # reward
-    print ("compute reward")
-    reward.computeReward(step)
- #   reward.displayRewards()
-
-    # compute learning
-    print ("compute learning")
-    learning.computeLearning(step)
-#    print ("states =",len(stateSet.getStateSet()),stateSet.getStateSet())
-
-    step+=1
-
+# run
+controller.run()
 print ("--------------------------------------------------------- finish")
+print (agents.getAgents())
 for id in agents.getAgents():
     agent=agents.getAgents()[id]
     print ("agent",id)
 
-    s=0
-    for state in agent.getStates():
-#        print ("step ",s,state,        stateSet.getStatePos(state))
-        s+=1
 
     print (len(agent.getListStateNotTested()),len(stateSet.getStateSet()))
 
-    for s in range(config.numStep-1):
-        print("step:",s)
-        for i in list(agent.getQtabList()[s]):
-            print (list(i))
+    for i in list(agent.getQtabList()[config.numStep-1]):        print (list(i))
+
+    print ("rewards of agent",id,":",agent.get_reward())
+
+# store outputs
+storeAgents=StoreAgents(config,agents)
+storeAgents.compute()
+
+# plot immages
+plotRewardPerAgent=PlotRewardPerAgent(config,agents)
+plotRewardPerAgent.getPlot()

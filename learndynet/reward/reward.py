@@ -9,14 +9,12 @@ class Reward:
         self.__agents=agents
 
     def computeReward(self,step):
-        G=self.__network.getGraphSim(step)
+        #G=self.__network.getGraphSim(step)
         for id , individual in self.__individuals.getIndividuals().items():
             utilities=individual.getUtilities()
             utility,posMode=self.__getMaxMode(utilities)
             if type(utility)!=str:
                 sp=individual.getSp()[posMode]
-                if type(utility)!=str:
-                    sp=individual.getSp()[posMode]
                 for t in sp:
                     i=1
                     while i < len(t):

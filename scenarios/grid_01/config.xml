@@ -13,43 +13,49 @@
     </urls>
 
     <simulation>
-        <parameter name="numStep">5000  </parameter> <!-- 1 means we do only the first sim (named sim-0000) -->
+        <parameter name="numStep">1000 </parameter> <!-- 1 means we do only the first sim (named sim-0000) -->
         <parameter name="initState">5</parameter> <!-- random or fix a kind of state. if random, do not need set value, otherwise set init state type -->
         <parameter name="initStateMode">random</parameter> <!-- or same -->
         <parameter name="seedInitStateMode">2</parameter>
     </simulation>
 
     <mobility>
-        <parameter name="typeInitIndividuals">random</parameter>
+        <parameter name="setupInitPositionIndividuals">random</parameter>
         <parameter name="percentIndividuals">10</parameter>
         <parameter name="multipleIndividualsOverVertex">True</parameter>
-        <parameter name="alpha_m">0.8,0.5,0.1</parameter> <!-- that represent the political decision. this value is global. Vals are for walk,bike and car respectively  -->
+        <parameter name="setup_theta_m">random</parameter>
+        <parameter name="percent_mode_individual">0.5,0.2,0.3</parameter> <!-- percent of individuals that prefer a mode  -->
+        <parameter name="alpha_m">1.0,0.3,0.1</parameter> <!--Global-mode parameter this value is global. it corresponds to a political decision. it describes the unexplained utility of the choice model per mode (?).-->
+        <parameter name="theta_m">1.0,0.8,0.0</parameter> <!-- it indicates how much an individual appreciate a mode. Individual-mode parameter. 3 combinations are created and set randomly -->
         <parameter name="typeMobilityModel">discreteModeChoice</parameter>
         <parameter name="val_weight_out">0</parameter>
-        <parameter name="cost_walk">0.1</parameter>
-        <parameter name="cost_bike">0.5</parameter>
-        <parameter name="cost_car">0.9</parameter>
+        <parameter name="cost">0.1,0.2,1.0</parameter> <!-- cost corresponds to walk, bike and car respectively -->
         <parameter name="modes">walk,bike,car </parameter>
         <parameter name="directions">from-to,to-from</parameter>
         <parameter name="maxNumberOfEdges">2</parameter>
-        <parameter name="rewardNoTripFunded">-1</parameter>
+        <parameter name="rewardNoTripFunded">-.10</parameter>
+        <parameter name="length_out">100</parameter>
     </mobility>
+
 
     <network>
         <parameter name="typeNetwork" type="val">grid</parameter>
-        <parameter name="dimension_x" type="grid">2</parameter>
-        <parameter name="dimension_y" type="grid">1</parameter>
-        <parameter name="dist_x" type="grid">2</parameter>
-        <parameter name="dist_y" type="grid">3</parameter>
+        <parameter name="dimension_x" type="grid">1</parameter>
+        <parameter name="dimension_y" type="grid">2</parameter>
+        <parameter name="dist_x" type="grid">1</parameter>
+        <parameter name="dist_y" type="grid">1</parameter>
     </network>
 
+    <seeds>
+        <parameter name="seed_setup_theta">1</parameter>
 
+    </seeds>
     <learning>
         <parameter name="typelearning">qlearning</parameter>   <!-- options: qlearning,random (does not work)-->
         <parameter name="randomseed">2</parameter>          <!-- to use when you use the random type of learning. If empty, no seed are fixed -->
-        <parameter name="learning_gamma">0.5</parameter>             <!-- discount factor. High values mean agent looking for reward in long time -->
-        <parameter name="epsilonmin">0.1</parameter>        <!-- minimum probability of exploration (e-greedy policy). High values of epsilon means more exploration -->
-        <parameter name="learning_alpha">0.1</parameter>             <!-- learning rate. High values mean more learning. -->
+        <parameter name="learning_gamma">.1</parameter>             <!-- discount factor. High values mean agent looking for reward in long time -->
+        <parameter name="learning_alpha">0.5</parameter>             <!-- learning rate. High values mean more learning. -->
+        <parameter name="epsilonmin">0.5</parameter>        <!-- minimum probability of exploration (e-greedy policy). High values of epsilon means more exploration -->
         <parameter name="roundqvalue"> 3 </parameter>       <!-- round the values of scores to put in qtable -->
         <parameter name="rewardNoScore"> -100 </parameter>  <!-- in the case of the no reward (score) are available at the step x, we give a fixed reward -->
         <parameter name="rdSelectAction">3</parameter>
@@ -61,5 +67,9 @@
         -->
         <parameter name="actionModeSelection">greedy</parameter>  <!-- random or greedy -->
     </learning>
+
+    <outputs>
+        <url name="agentsReward">agentsReward.csv</url>
+    </outputs>
 
 </data>

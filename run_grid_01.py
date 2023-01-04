@@ -7,8 +7,8 @@ from learnDyNet.learndynet.setup.config import Config
 from learnDyNet.learndynet.setup.controller import Controller
 from learnDyNet.learndynet.network.network import Network
 from learnDyNet.learndynet.network.networkGrid import NetworkGrid
-from learnDyNet.learndynet.setup.individuals import Individuals
-from learnDyNet.learndynet.setup.stateSet import StateSet
+from learnDyNet.learndynet.mobility.individuals import Individuals
+from learnDyNet.learndynet.learning.stateSet import StateSet
 
 pathConfig="/media/mtirico/DATA/project/learnDyNet/learnDyNet/scenarios/grid_01/config.xml"
 

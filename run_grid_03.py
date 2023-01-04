@@ -4,14 +4,14 @@ from learnDyNet.learndynet.learning.qLearning import QLearning
 from learnDyNet.learndynet.mobility.mobility import Mobility
 #from learnDyNet.learndynet.setup.agents import Agents
 from learnDyNet.learndynet.reward.reward import Reward
-from learnDyNet.learndynet.setup.actionSet import ActionSet
-from learnDyNet.learndynet.setup.agents import Agents
+from learnDyNet.learndynet.learning.actionSet import ActionSet
+from learnDyNet.learndynet.learning.agents import Agents
 from learnDyNet.learndynet.setup.config import Config
 from learnDyNet.learndynet.setup.controller import Controller
 from learnDyNet.learndynet.network.network import Network
 from learnDyNet.learndynet.network.networkGrid import NetworkGrid
-from learnDyNet.learndynet.setup.individuals import Individuals
-from learnDyNet.learndynet.setup.stateSet import StateSet
+from learnDyNet.learndynet.mobility.individuals import Individuals
+from learnDyNet.learndynet.learning.stateSet import StateSet
 
 pathConfig="/media/mtirico/DATA/project/learnDyNet/learnDyNet/scenarios/grid_01/config.xml"
 

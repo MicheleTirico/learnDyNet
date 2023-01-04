@@ -24,7 +24,7 @@ class Learning():
         elif self.__config.actionModeSelection=="greedy":   self.__selectActionGreedy(step)
 
     def __selectActionRandom(self,step):
-        print ("select action random")
+        #print ("select action random")
         for id in self.__agents.getAgents():
             agent=self.__agents.getAgents()[id]
             state=agent.getStates()[step-1]
@@ -35,7 +35,7 @@ class Learning():
             newState=self.__stateSet.getStateFromAction(state,action)
             agent.appendState(newState)
             agent.appendAction(action)
-
+            """
             print ("----------- agent",id)
             print ("states before:",agent.getStates())
             print ("state at step ",step-1,":",state)
@@ -45,7 +45,7 @@ class Learning():
             print ("random action:",action)
             print ("newState:",newState)
             print ("states after:",agent.getStates())
-
+            """
     def __selectActionGreedy(self,step):
         print ("select action greedy")
         for id in self.__agents.getAgents():
@@ -60,18 +60,23 @@ class Learning():
             agent.appendAction(action)
 
     def __getActionGreedy(self, step,allowedActions ,agent,statePos):
-        epsilonMin=self.__config.epsilonmin
+        epsilonMin=1#self.__config.epsilonmin
         nSim=self.__config.numStep
-        epsilon = max(epsilonMin, 1 - step / nSim)
-        if random.uniform(0, 1) < epsilon:                  actionPos=allowedActions[self.__rdSelectAction.randint(len(allowedActions))]
-        else:
-#            listActions=list(agent.getQtabMap()[step-1][statePos])
-            listActions=list(agent.getQtabList()[step-1][statePos])
-
-            maxVal = max(listActions)
-            posMax = listActions.index(maxVal)
-            actionPos=self.__actionSet.getActions().index(self.__actionSet.getActions()[posMax])
-            if actionPos not in allowedActions:             actionPos=allowedActions[self.__rdSelectAction.randint(len(allowedActions))]
+        epsilon =  1- step / nSim
+        rd_epsilon=np.random.RandomState(2)
+        test=False
+        while test ==False:
+            if rd_epsilon.rand() < epsilon:
+                actionPos=allowedActions[self.__rdSelectAction.randint(len(allowedActions))]
+                if actionPos in allowedActions:
+                    test=True
+            else:
+                listActions=list(agent.getQtabList()[step-1][statePos])
+                maxVal = min(listActions)
+                posMax = listActions.index(maxVal)
+                actionPos=self.__actionSet.getActions().index(self.__actionSet.getActions()[posMax])
+                if actionPos in allowedActions:
+                    test=True
         return actionPos
 
     def __computeQlearning(self, step):

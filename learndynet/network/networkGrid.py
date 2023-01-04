@@ -38,11 +38,11 @@ class NetworkGrid (Network):
             coord0=G.nodes[e[0]]["coord"]
             coord1=G.nodes[e[1]]["coord"]
             dist=math.sqrt( math.pow(coord1[0]-coord0[0],2)+math.pow(coord1[1]-coord0[1],2))
+            print (coord0,coord1,dist)
             G.edges[e[0],e[1]]["length"]=dist
             i+=1
 
         self.__G=MultiDiGraph(G)
         for e in self.__G.edges: self.__G.remove_edge(e[1],e[0])
-
 
     def getGraph (self):         return self.__G

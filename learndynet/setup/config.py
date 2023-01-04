@@ -2,6 +2,10 @@ import shutil
 import xml.etree.ElementTree as ET
 import os
 import sys
+
+import numpy as np
+
+from learnDyNet.learndynet.utils import utils
 from learnDyNet.learndynet.utils.logger import Logger
 
 
@@ -22,7 +26,7 @@ class Config:
         self.__data=self.__tree.getroot()
 
         # path url
-        self.pathAbs = self.__getVal("urls","url","absPath")+"/"
+        self.pathAbs=               self.__getVal("urls","url","absPath")+"/"
 
         self.pathScenarios=self.pathAbs+self.__getVal("urls","url","scenarios")+"/"
         self.pathScenario=self.pathScenarios+self.__getVal("urls","url","scenario")+"/"
@@ -57,28 +61,35 @@ class Config:
         self.numActions=0
 
         # mobility parameters
-        self.typeInitIndividuals=   self.__getVal("mobility","parameter","typeInitIndividuals")
+        self.setupInitPositionIndividuals=   self.__getVal("mobility","parameter","setupInitPositionIndividuals")
         self.percentIndividuals=    float(self.__getVal("mobility","parameter","percentIndividuals"))
         self.typeMobilityModel=     self.__getVal('mobility',"parameter","typeMobilityModel")
-        self.val_weight_out=        float(self.__getVal("mobility","parameter","val_weight_out"))
+ #       self.val_weight_out=        float(self.__getVal("mobility","parameter","val_weight_out"))
         self.modes=                 (self.__getVal("mobility","parameter","modes")).split(",")
         self.directions=            (self.__getVal("mobility","parameter","directions")).split(",")
         self.maxNumberOfEdges=      int(self.__getVal("mobility","parameter","maxNumberOfEdges"))
-        self.cost_walk=             float(self.__getVal("mobility","parameter","cost_walk"))
-        self.cost_bike=             float(self.__getVal("mobility","parameter","cost_bike"))
-        self.cost_car=             float(self.__getVal("mobility","parameter","cost_car"))
+        self.cost=                  (self.__getVal("mobility","parameter","cost")).split(",")
         self.multipleIndividualsOverVertex=bool(self.__getVal("mobility","parameter","multipleIndividualsOverVertex"))
         self.rewardNoTripFunded=    float(self.__getVal("mobility","parameter","rewardNoTripFunded"))
+        self.theta_m=               utils.castFloatElementOfList(self.__getVal("mobility","parameter","theta_m").split(","))
+        self.alpha_m=               utils.castFloatElementOfList(self.__getVal("mobility","parameter","alpha_m").split(","))
+        self.setup_theta_m=         self.__getVal("mobility","parameter","setup_theta_m")
+        self.length_out=            float(self.__getVal("mobility","parameter","length_out"))
 
         # network parameters
         self.typeNetwork=           self.__getValType("network","parameter","typenetwork","val")
+
         # grid
         self.graph_grid_dimension_x=int(self.__getValType("network","parameter","dimension_x","grid"))
         self.graph_grid_dimension_y=int(self.__getValType("network","parameter","dimension_y","grid"))
         self.graph_grid_dist_x=float(self.__getValType("network","parameter","dist_x","grid"))
         self.graph_grid_dist_y=float(self.__getValType("network","parameter","dist_y","grid"))
 
+        # seeds
+        self.seed_setup_theta=       int(self.__getVal("seeds","parameter","seed_setup_theta"))
 
+        # outputs
+        self.path_agentsReward=      self.pathOutput+"/"+self.__getVal("outputs","url","agentsReward")
 
 
     def __getVal(self,name_root,name_tag,name):
